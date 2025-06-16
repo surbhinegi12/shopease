@@ -1,0 +1,55 @@
+# Java build files
+/target/
+*.class
+
+# Logs
+*.log
+
+# Maven specific files
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+
+# IDE files
+*.iml
+.idea/
+*.ipr
+*.iws
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+
+# IntelliJ 
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.project
+.classpath
+.csettings
+.settings/
+bin/
+
+# VSCode
+.vscode/
+
+# Gradle
+.gradle
+build/
+
+# Node (if applicable for future frontend)
+node_modules/
+
+# JWT Secrets or sensitive keys
+*.key
+*.pem
+*.jks
+
+# Temporary files
+*.tmp
+*.swp
