@@ -16,3 +16,9 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+jwt:
+  refresh:
+    expiration:
+      ms: 604800000 # 7 days
+
