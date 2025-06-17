@@ -9,7 +9,10 @@ import com.shopease.userservice.repository.UserRepository;
 import com.shopease.userservice.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,23 +46,21 @@ public class UserService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid username or password"));
 
+        System.out.println(passwordEncoder.encode(request.getPassword()));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid username or password");
         }
 
-        String accessToken = jwtUtil.generateToken(user.getUsername(), user.getRole());
+        String accessToken = jwtUtil.generateToken(user.getUsername(), user.getRole(), user.getId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
 
         return new JwtResponse(accessToken, refreshToken.getToken());
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logoutUser(@RequestBody LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        refreshTokenService.deleteByUser(user);
-        return ResponseEntity.ok("User logged out successfully.");
+    public User getMyInfo(Long userId) {
+        Optional<User> u = null;
+        u = userRepository.findById(userId);
+        return u.get();
     }
 
 }

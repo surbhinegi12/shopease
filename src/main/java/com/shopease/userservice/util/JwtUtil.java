@@ -21,10 +21,11 @@ public class JwtUtil {
 
     private final long jwtExpirationMs = 1000 * 60 * 60 * 10; // 10 hours
 
-    public String generateToken(String username, String role) {
+    public String generateToken(String username, String role, Long userId) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)
+                .claim("userId", userId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(secretKey, SignatureAlgorithm.HS512)
@@ -37,6 +38,10 @@ public class JwtUtil {
 
     public String getRoleFromToken(String token) {
         return parseClaims(token).get("role", String.class);
+    }
+
+    public Long getUserIdFromToken(String token) {
+        return parseClaims(token).get("userId", Long.class);
     }
 
     public boolean validateToken(String token) {
